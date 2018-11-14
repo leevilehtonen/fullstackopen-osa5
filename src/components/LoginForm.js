@@ -12,17 +12,7 @@ class LoginForm extends React.Component {
 
   submit = async event => {
     event.preventDefault();
-    try {
-      await this.props.login(this.state.username, this.state.password);
-    } catch (exception) {
-      this.setState({
-        password: "",
-        error: "käyttäjätunnus tai salasana virheellinen"
-      });
-      setTimeout(() => {
-        this.setState({ error: null });
-      }, 5000);
-    }
+    await this.props.login(this.state.username, this.state.password);
   };
 
   handleLoginFieldChange = event => {
@@ -33,11 +23,9 @@ class LoginForm extends React.Component {
     return (
       <div>
         <h2>Log in</h2>
-        <h3>{this.state.error}</h3>
-
         <form onSubmit={this.submit}>
           <div>
-            username
+            <span>Username: </span>
             <input
               type="text"
               name="username"
@@ -46,7 +34,7 @@ class LoginForm extends React.Component {
             />
           </div>
           <div>
-            password:
+            <span>Password: </span>
             <input
               type="password"
               name="password"
@@ -54,7 +42,7 @@ class LoginForm extends React.Component {
               onChange={this.handleLoginFieldChange}
             />
           </div>
-          <button type="submit">kirjaudu</button>
+          <button type="submit">log in</button>
         </form>
       </div>
     );
