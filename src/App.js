@@ -1,30 +1,50 @@
-import React from 'react'
-import Blog from './components/Blog'
-import blogService from './services/blogs'
+import React from "react";
+import Blog from "./components/Blog";
+import blogService from "./services/blogs";
+import loginService from "./services/login";
+
+import LoginForm from "./components/LoginForm";
 
 class App extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
-      blogs: []
-    }
+      blogs: [],
+      user: null
+    };
   }
 
   componentDidMount() {
-    blogService.getAll().then(blogs =>
-      this.setState({ blogs })
-    )
-  } 
+    const loggedUserJSON = window.localStorage.getItem("loggedBlogappUser");
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON);
+      this.setState({ user });
+    }
+    blogService.getAll().then(blogs => this.setState({ blogs }));
+  }
+  login = async (username, password) => {
+    const result = await loginService.login({
+      username,
+      password
+    });
+    this.setState({ user: result });
+    window.localStorage.setItem("loggedBlogappUser", JSON.stringify(result));
+  };
 
   render() {
-    return (
-      <div>
-        <h2>blogs</h2>
-        {this.state.blogs.map(blog => 
-          <Blog key={blog._id} blog={blog}/>
-        )}
-      </div>
-    );
+    if (this.state.user === null) {
+      return <LoginForm login={this.login} />;
+    } else {
+      return (
+        <div>
+          <h2>blogs</h2>
+          <p>{this.state.user.name} logged in</p>
+          {this.state.blogs.map(blog => (
+            <Blog key={blog._id} blog={blog} />
+          ))}
+        </div>
+      );
+    }
   }
 }
 
