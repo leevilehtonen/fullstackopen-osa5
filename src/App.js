@@ -31,6 +31,11 @@ class App extends React.Component {
     window.localStorage.setItem("loggedBlogappUser", JSON.stringify(result));
   };
 
+  logout = async () => {
+    window.localStorage.removeItem("loggedBlogappUser");
+    this.setState({ user: null });
+  };
+
   render() {
     if (this.state.user === null) {
       return <LoginForm login={this.login} />;
@@ -38,7 +43,10 @@ class App extends React.Component {
       return (
         <div>
           <h2>blogs</h2>
-          <p>{this.state.user.name} logged in</p>
+          <p>
+            {this.state.user.name} logged in
+            <button onClick={() => this.logout()}>logout</button>
+          </p>
           {this.state.blogs.map(blog => (
             <Blog key={blog._id} blog={blog} />
           ))}
