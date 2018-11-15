@@ -29,3 +29,18 @@ div {
   border-color: red;
   color: red;
 }
+
+.blog {
+  border: 1px solid #555;
+  padding: 4px;
+}
+.blog p {
+  margin: 0;
+}
+.blogContent {
+  margin-left: 10px;
+}
+.blogContent p,
+button {
+  margin: 0;
+}
