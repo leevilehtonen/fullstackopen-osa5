@@ -17,6 +17,10 @@ const asObject = anecdote => {
   };
 };
 
+const sort = array => {
+  return array.sort((a, b) => b.votes - a.votes);
+};
+
 const initialState = anecdotesAtStart.map(asObject);
 
 const reducer = (state = initialState, action) => {
@@ -28,9 +32,9 @@ const reducer = (state = initialState, action) => {
       const item = Object.assign({}, state[arrId], {
         votes: state[arrId].votes + 1
       });
-      return [...state.slice(0, arrId), item, ...state.slice(arrId + 1)].sort(
-        (a, b) => b.votes - a.votes
-      );
+      return sort([...state.slice(0, arrId), item, ...state.slice(arrId + 1)]);
+    case "ADD_ANECDOTE":
+      return sort(state.concat(asObject(action.anecdote)));
     default:
       return state;
   }

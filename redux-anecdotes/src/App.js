@@ -1,8 +1,25 @@
 import React from "react";
 
 class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      anecdote: ""
+    };
+  }
   addVote = id => {
     this.props.store.dispatch({ type: "ADD_VOTE", id });
+  };
+  submitForm = e => {
+    e.preventDefault();
+    this.props.store.dispatch({
+      type: "ADD_ANECDOTE",
+      anecdote: this.state.anecdote
+    });
+    this.setState({ anecdote: "" });
+  };
+  handleAnecdoteChange = e => {
+    this.setState({ anecdote: e.target.value });
   };
 
   render() {
@@ -22,9 +39,12 @@ class App extends React.Component {
         <h2>create new</h2>
         <form>
           <div>
-            <input />
+            <input
+              value={this.state.anecdote}
+              onChange={this.handleAnecdoteChange}
+            />
           </div>
-          <button>create</button>
+          <button onClick={this.submitForm}>create</button>
         </form>
       </div>
     );
