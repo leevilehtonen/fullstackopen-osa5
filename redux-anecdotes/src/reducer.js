@@ -28,7 +28,9 @@ const reducer = (state = initialState, action) => {
       const item = Object.assign({}, state[arrId], {
         votes: state[arrId].votes + 1
       });
-      return [...state.slice(0, arrId), item, ...state.slice(arrId + 1)];
+      return [...state.slice(0, arrId), item, ...state.slice(arrId + 1)].sort(
+        (a, b) => b.votes - a.votes
+      );
     default:
       return state;
   }
